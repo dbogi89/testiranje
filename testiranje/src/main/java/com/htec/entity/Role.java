@@ -1,0 +1,33 @@
+package com.htec.entity;
+
+/**
+ * Created by dbogicevic
+ */
+
+import lombok.*;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+/**
+ * Created by dbogicevic
+ */
+@Entity
+@Table(name = "ROLE", schema = "public")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = "users")
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id_role;
+
+    @Enumerated(EnumType.STRING)
+    private RoleName roleName;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users = new HashSet<>();
+
+
+}
