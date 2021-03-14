@@ -18,7 +18,7 @@ public class Timestamps {
     @Column(name = "CREATED", nullable = false, updatable = false)
     private LocalDateTime created;
 
-    @Column(name = "UPDATED", nullable = false)
+    @Column(name = "UPDATED", nullable = false, updatable = false)
     private LocalDateTime updated;
 
     @PrePersist

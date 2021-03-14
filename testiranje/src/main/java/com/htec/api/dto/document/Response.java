@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class DocumentResponse<T> {
+public class Response<T> {
     private int code;
     private String description;
     private T content;

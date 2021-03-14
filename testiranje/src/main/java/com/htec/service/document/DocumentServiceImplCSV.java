@@ -1,6 +1,6 @@
 package com.htec.service.document;
 
-import com.htec.api.dto.document.DocumentResponse;
+import com.htec.api.dto.document.Response;
 import com.opencsv.bean.BeanVerifier;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class DocumentServiceImplCSV implements DocumentService{
     @Override
-    public <T>DocumentResponse generate(MultipartFile multipartFile, Class<T> type,
-                                     BeanVerifier<T> bean) throws IOException {
+    public <T> Response generate(MultipartFile multipartFile, Class<T> type,
+                                 BeanVerifier<T> bean) throws IOException {
         List<T> csvList;
         Reader bufferedReader = null;
         try {
@@ -33,7 +33,7 @@ public class DocumentServiceImplCSV implements DocumentService{
         }finally {
             if(bufferedReader != null)bufferedReader.close();
         }
-        return DocumentResponse.builder().content(csvList).build();
+        return Response.builder().content(csvList).build();
 
     }
 }

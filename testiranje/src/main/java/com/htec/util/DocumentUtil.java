@@ -1,6 +1,6 @@
 package com.htec.util;
 
-import com.htec.api.dto.document.DocumentResponse;
+import com.htec.api.dto.document.Response;
 import com.htec.constants.Constants;
 import com.htec.entity.DocumentType;
 import com.htec.service.document.DocumentService;
@@ -15,12 +15,12 @@ import java.io.IOException;
  * Created by dbogicevic
  */
 public class DocumentUtil {
-
-    public static <T> DocumentResponse parseDocument(String documentType, MultipartFile multipartFile, Class<T> type,
-                                                  BeanVerifier<T> bean) throws IOException {
+  //https://attacomsian.com/blog/read-write-csv-files-opencsv
+    public static <T> Response parseDocument(String documentType, MultipartFile multipartFile, Class<T> type,
+                                             BeanVerifier<T> bean) throws IOException {
         DocumentService documentService = null;
         DocumentType docType = toDocumentType(documentType);
-        DocumentResponse documentResponse = null;
+        Response documentResponse = null;
         switch (docType) {
             case CSV:
                 documentService = new DocumentServiceImplCSV();
