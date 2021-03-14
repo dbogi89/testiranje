@@ -56,7 +56,7 @@ public class CityApi {
 
     }
 
-    @PostMapping("/{idCity/comments}")
+    @PostMapping("/{idCity}/comments")
     @ResponseStatus(HttpStatus.CREATED)
     public Comment addComment(@PathVariable Long idCity, @RequestBody CommentDtoRequest commentDtoRequest){
         return cityService.createComment(idCity, commentDtoRequest);
