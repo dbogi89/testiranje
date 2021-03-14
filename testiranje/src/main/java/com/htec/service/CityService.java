@@ -1,9 +1,9 @@
 package com.htec.service;
 
-import com.htec.api.dto.request.CityDtoRequest;
-import com.htec.api.dto.request.CitySerach;
-import com.htec.api.dto.request.CommentDtoRequest;
-import com.htec.api.dto.response.CityDtoResponse;
+import com.htec.api.dto.city.CityDtoRequest;
+import com.htec.api.dto.city.CitySerach;
+import com.htec.api.dto.comment.CommentDtoRequest;
+import com.htec.api.dto.city.CityDtoResponse;
 import com.htec.entity.Comment;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.htec.api.dto.request;
+package com.htec.api.dto.airport;
 
 import com.opencsv.bean.BeanVerifier;
 import com.opencsv.exceptions.CsvConstraintViolationException;

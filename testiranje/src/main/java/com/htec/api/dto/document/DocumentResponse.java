@@ -1,4 +1,4 @@
-package com.htec.api.dto.response;
+package com.htec.api.dto.document;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

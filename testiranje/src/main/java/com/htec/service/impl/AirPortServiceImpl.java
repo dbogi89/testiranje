@@ -1,13 +1,12 @@
 package com.htec.service.impl;
 
-import com.htec.api.dto.request.AitPortDtoRequest;
-import com.htec.api.dto.request.RouteDtoRequest;
+import com.htec.api.dto.airport.AitPortDtoRequest;
+import com.htec.api.dto.route.RouteDtoRequest;
 import com.htec.entity.Airport;
 import com.htec.entity.City;
 import com.htec.entity.Country;
 import com.htec.entity.Route;
 import com.htec.mapper.AirPortMapper;
-import com.htec.mapper.CityMapper;
 import com.htec.repository.AirPortRepository;
 import com.htec.repository.CityRepository;
 import com.htec.repository.CountryRepository;

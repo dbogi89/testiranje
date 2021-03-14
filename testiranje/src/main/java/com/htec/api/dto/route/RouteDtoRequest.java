@@ -1,4 +1,4 @@
-package com.htec.api.dto.request;
+package com.htec.api.dto.route;
 
 import com.opencsv.bean.CsvBindByPosition;
 import lombok.AllArgsConstructor;

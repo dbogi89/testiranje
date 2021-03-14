@@ -1,4 +1,4 @@
-package com.htec.api.dto.request;
+package com.htec.api.dto.document;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CitySerach {
-    private String cityName;
+public class DocumentDtoRequest {
+    private String documentType;
+
+
 }

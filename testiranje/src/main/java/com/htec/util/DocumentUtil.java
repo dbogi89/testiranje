@@ -1,6 +1,6 @@
 package com.htec.util;
 
-import com.htec.api.dto.response.DocumentResponse;
+import com.htec.api.dto.document.DocumentResponse;
 import com.htec.constants.Constants;
 import com.htec.entity.DocumentType;
 import com.htec.service.document.DocumentService;

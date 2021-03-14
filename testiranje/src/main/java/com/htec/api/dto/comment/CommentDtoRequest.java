@@ -1,4 +1,4 @@
-package com.htec.api.dto.request;
+package com.htec.api.dto.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

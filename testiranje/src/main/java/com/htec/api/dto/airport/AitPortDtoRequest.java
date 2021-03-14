@@ -1,4 +1,4 @@
-package com.htec.api.dto.request;
+package com.htec.api.dto.airport;
 
 import com.opencsv.bean.CsvBindByPosition;
 import lombok.AllArgsConstructor;
@@ -42,7 +42,7 @@ public class AitPortDtoRequest {
     private BigDecimal longitude;
 
     @CsvBindByPosition(position = 8)
-    private short altitude;
+    private Integer altitude;
 
     @CsvBindByPosition(position = 9)
     private float timezone;

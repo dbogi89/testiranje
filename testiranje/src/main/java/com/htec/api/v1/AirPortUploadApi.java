@@ -1,7 +1,11 @@
 package com.htec.api.v1;
 
-import com.htec.api.dto.request.*;
-import com.htec.api.dto.response.DocumentResponse;
+import com.htec.api.dto.airport.AirPortDtoRequestBean;
+import com.htec.api.dto.airport.AitPortDtoRequest;
+import com.htec.api.dto.document.DocumentDtoRequest;
+import com.htec.api.dto.document.DocumentResponse;
+import com.htec.api.dto.route.RouteDtoRequest;
+import com.htec.api.dto.route.RouteDtoRequestBean;
 import com.htec.constants.Constants;
 import com.htec.service.AirPortService;
 import com.htec.util.DocumentUtil;

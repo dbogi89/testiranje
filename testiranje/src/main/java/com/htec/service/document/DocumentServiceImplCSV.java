@@ -1,6 +1,6 @@
 package com.htec.service.document;
 
-import com.htec.api.dto.response.DocumentResponse;
+import com.htec.api.dto.document.DocumentResponse;
 import com.opencsv.bean.BeanVerifier;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
