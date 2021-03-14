@@ -25,6 +25,8 @@ public class AirPortMapper {
     }
 
     public Route toRoute(RouteDtoRequest r) {
-        return null;
+        Route route = new Route();
+        route.setAirlineCode(r.getAirlineCode());
+        return route;
     }
 }
