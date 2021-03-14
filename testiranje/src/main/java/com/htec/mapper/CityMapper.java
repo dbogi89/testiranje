@@ -25,6 +25,8 @@ public class CityMapper {
                 .idCity(city.getId())
                 .cityName(city.getCityName())
                 .countryName(city.getCountry().getCountryName())
+                .description(city.getDescription())
+                .comments(city.getComments())
                 .build();
 
     }

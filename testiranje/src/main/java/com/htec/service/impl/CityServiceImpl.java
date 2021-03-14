@@ -39,9 +39,9 @@ public class CityServiceImpl implements CityService {
     @Transactional
     public CityDtoResponse createCity(CityDtoRequest cityDtoRequest) {
         Optional<Country> countryDataBase = countryRepository.findByCountryName(cityDtoRequest.getCountryName());
-        City city =  cityRepository.findByCityName(cityDtoRequest.getCityName())
-                .orElseThrow(()->new CityException("City not exist"));
-
+        Optional<City> cityDatabase =  cityRepository.findByCityName(cityDtoRequest.getCityName());
+        if(cityDatabase.isPresent())throw new CityException("City exist");
+        City city = cityMapper.toCity(cityDtoRequest);
         if(!countryDataBase.isPresent()) {
             Country country = new Country();
             country.setCountryName(cityDtoRequest.getCountryName());

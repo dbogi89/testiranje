@@ -33,7 +33,7 @@ public class CityApi {
 
      @GetMapping
      @ResponseStatus(HttpStatus.OK)
-     public List<CityDtoResponse> findAllCities(@RequestParam(defaultValue = "0")Integer limit){
+     public List<CityDtoResponse> findAllCities(@RequestParam(defaultValue = "0",required = false)Integer limit){
         if(limit < 0 )throw new CityException("Limit must be zero or greater");
        return cityService.sreachCity(new CitySerach(""),limit);
 
@@ -63,7 +63,7 @@ public class CityApi {
     }
 
 
-    @GetMapping("/citySerach")
+    @PostMapping("/citySerach")
     @ResponseStatus(HttpStatus.OK)
     public List<CityDtoResponse> findByNameCities(@RequestParam(defaultValue = "0")Integer limit, @RequestBody @Valid CitySerach citySerach){
         if(limit < 0 )throw new CityException("Limit must be zero or greater");
