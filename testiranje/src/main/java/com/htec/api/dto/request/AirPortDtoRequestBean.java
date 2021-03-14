@@ -9,6 +9,6 @@ import com.opencsv.exceptions.CsvConstraintViolationException;
 public class AirPortDtoRequestBean implements BeanVerifier<AitPortDtoRequest> {
     @Override
     public boolean verifyBean(AitPortDtoRequest aitPortDtoRequest) throws CsvConstraintViolationException {
-        return aitPortDtoRequest.getAirportId() != 0;
+        return aitPortDtoRequest.getId() != 0;
     }
 }

@@ -18,22 +18,22 @@ public class DocumentUtil {
 
     public static <T> DocumentResponse parseDocument(String documentType, MultipartFile multipartFile, Class<T> type,
                                                   BeanVerifier<T> bean) throws IOException {
-        DocumentService documentService;
+        DocumentService documentService = null;
         DocumentType docType = toDocumentType(documentType);
         DocumentResponse documentResponse = null;
         switch (docType) {
             case CSV:
                 documentService = new DocumentServiceImplCSV();
-                documentResponse = documentService.generate(multipartFile, type, bean);
                 break;
+            //case EXCEL:
+                //u buducnosti
+             //   break;
             default:
                 documentService = new DocumentServiceImplCSV();
-                documentResponse = documentService.generate(multipartFile, type, bean);
                 break;
-
-
         }
-        return documentResponse;
+
+        return documentService.generate(multipartFile, type, bean);
     }
 
 

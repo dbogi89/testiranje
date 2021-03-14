@@ -1,7 +1,9 @@
 package com.htec.mapper;
 
 import com.htec.api.dto.request.AitPortDtoRequest;
+import com.htec.api.dto.request.RouteDtoRequest;
 import com.htec.entity.Airport;
+import com.htec.entity.Route;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,6 +21,10 @@ public class AirPortMapper {
     }
 
     public List<Airport> toAirPortDto(List<Airport> airPorts) {
+        return null;
+    }
+
+    public Route toRoute(RouteDtoRequest r) {
         return null;
     }
 }

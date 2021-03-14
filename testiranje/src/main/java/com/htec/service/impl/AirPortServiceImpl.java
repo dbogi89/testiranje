@@ -1,19 +1,23 @@
 package com.htec.service.impl;
 
 import com.htec.api.dto.request.AitPortDtoRequest;
+import com.htec.api.dto.request.RouteDtoRequest;
 import com.htec.entity.Airport;
 import com.htec.entity.City;
 import com.htec.entity.Country;
+import com.htec.entity.Route;
 import com.htec.mapper.AirPortMapper;
 import com.htec.mapper.CityMapper;
 import com.htec.repository.AirPortRepository;
 import com.htec.repository.CityRepository;
 import com.htec.repository.CountryRepository;
+import com.htec.repository.RouteRepository;
 import com.htec.service.AirPortService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +31,7 @@ public class AirPortServiceImpl implements AirPortService {
     private final CountryRepository countryRepository;
     private final AirPortRepository airPortRepository;
     private final AirPortMapper airPortMapper;
+    private final RouteRepository routeRepository;
 
     @Override
     @Transactional
@@ -43,5 +48,23 @@ public class AirPortServiceImpl implements AirPortService {
             return airPortMapper.toAirPort(a);
         }).collect(Collectors.toList()));
         return airPortMapper.toAirPortDto(airPorts);
+    }
+
+    @Override
+    @Transactional
+    public List<Route> saveRoute(List<RouteDtoRequest> routeDtoRequests) {
+        List<Route>routes = new ArrayList<>();
+        for(RouteDtoRequest r: routeDtoRequests) {
+            Airport sourceAirPort = airPortRepository.findById(r.getSourceAirPortId()).get();
+            Airport destinationAirPort  = airPortRepository.findById(r.getDestinationAirPortId()).get();
+            if(sourceAirPort != null && destinationAirPort != null){
+                Route route = airPortMapper.toRoute(r);
+                route.setSourceAirPort(sourceAirPort);
+                route.setDestinationAirPort(destinationAirPort);
+                routes.add(route);
+            }
+        }
+        routeRepository.saveAll(routes);
+        return null;
     }
 }

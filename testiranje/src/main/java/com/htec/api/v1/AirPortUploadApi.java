@@ -1,8 +1,6 @@
 package com.htec.api.v1;
 
-import com.htec.api.dto.request.AirPortDtoRequestBean;
-import com.htec.api.dto.request.AitPortDtoRequest;
-import com.htec.api.dto.request.DocumentDtoRequest;
+import com.htec.api.dto.request.*;
 import com.htec.api.dto.response.DocumentResponse;
 import com.htec.constants.Constants;
 import com.htec.service.AirPortService;
@@ -28,18 +26,32 @@ public class AirPortUploadApi {
     private final AirPortService airPortService;
 
     @PostMapping("/airPortFile")
-    public ResponseEntity<DocumentResponse> uploadAirPort(@RequestPart("file") MultipartFile  multipartFile, @RequestBody DocumentDtoRequest documentDtoRequest){
-      if(multipartFile.isEmpty())
-          return new ResponseEntity<>(DocumentResponse.builder().code(Constants.NOK).content("File not valid").build(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<DocumentResponse> uploadAirPort(@RequestPart("file") MultipartFile  multipartFile, @RequestBody DocumentDtoRequest documentDtoRequest) {
+        if (multipartFile.isEmpty())
+            return new ResponseEntity<>(DocumentResponse.builder().code(Constants.NOK).content("File not valid").build(), HttpStatus.BAD_REQUEST);
 
         try {
             DocumentResponse documentResponse =
-                    DocumentUtil.parseDocument(documentDtoRequest.getDocumentType() , multipartFile, AitPortDtoRequest.class, new AirPortDtoRequestBean());
-        List<AitPortDtoRequest> aitPortDtoRequestList = (List<AitPortDtoRequest>) documentResponse.getContent();
-        return ResponseEntity.ok().body(DocumentResponse.builder().code(Constants.OK).content(airPortService.save(aitPortDtoRequestList)).build());
+                    DocumentUtil.parseDocument(documentDtoRequest.getDocumentType(), multipartFile, AitPortDtoRequest.class, new AirPortDtoRequestBean());
+            List<AitPortDtoRequest> aitPortDtoRequestList = (List<AitPortDtoRequest>) documentResponse.getContent();
+            return ResponseEntity.ok().body(DocumentResponse.builder().code(Constants.OK).content(airPortService.save(aitPortDtoRequestList)).build());
 
         } catch (IOException e) {
-           return new ResponseEntity<>(DocumentResponse.builder().code(Constants.NOK).content("Parse file problem").build(),HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(DocumentResponse.builder().code(Constants.NOK).content("Parse file problem").build(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/airPortRoutes")
+    public ResponseEntity<DocumentResponse> uploadRoutes(@RequestPart("file") MultipartFile  multipartFile, @RequestBody DocumentDtoRequest documentDtoRequest){
+        if(multipartFile.isEmpty())
+            return new ResponseEntity<>(DocumentResponse.builder().code(Constants.NOK).content("File not valid").build(), HttpStatus.BAD_REQUEST);
+
+        try {
+            DocumentResponse documentResponse = DocumentUtil.parseDocument(documentDtoRequest.getDocumentType() , multipartFile, RouteDtoRequest.class, new RouteDtoRequestBean());
+            List<RouteDtoRequest> routeDtoRequests = (List<RouteDtoRequest>) documentResponse.getContent();
+            return ResponseEntity.ok().body(DocumentResponse.builder().code(Constants.OK).content(airPortService.saveRoute(routeDtoRequests)).build());
+
+        } catch (IOException e) {
+            return new ResponseEntity<>(DocumentResponse.builder().code(Constants.NOK).content("Parse file problem").build(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
 
