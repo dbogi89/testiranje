@@ -1,6 +1,7 @@
 package com.htec.api.dto.airport;
 
 import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.processor.PreAssignmentProcessor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,10 +16,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Data
 public class AitPortDtoRequest {
-    private Long countId;
-    private Long cityId;
+
     @CsvBindByPosition(position = 0)
-    private int id;
+    private String id;
 
     @CsvBindByPosition(position = 1)
     private String airPortName;
@@ -42,10 +42,10 @@ public class AitPortDtoRequest {
     private BigDecimal longitude;
 
     @CsvBindByPosition(position = 8)
-    private Integer altitude;
+    private String altitude;
 
     @CsvBindByPosition(position = 9)
-    private float timezone;
+    private String timezone;
 
     @CsvBindByPosition(position = 10)
     private String dst;
@@ -58,6 +58,8 @@ public class AitPortDtoRequest {
 
     @CsvBindByPosition(position = 13)
     private String source;
+    private Long countId;
+    private Long cityId;
 
 
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "COUNTRY",catalog = "testdb", schema = "PUBLIC")
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @ToString(exclude = {"airports","cities"})
 public class Country {
 
@@ -26,6 +26,10 @@ public class Country {
     @Basic(optional = false)
     @Column(nullable = false, length = 50, name = "COUNTRY_NAME")
     private String countryName;
+
+    public Country(String countryName) {
+        this.countryName = countryName;
+    }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "country")
     private List<Airport> airports;

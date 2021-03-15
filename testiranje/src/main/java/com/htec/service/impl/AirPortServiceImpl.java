@@ -1,5 +1,6 @@
 package com.htec.service.impl;
 
+import com.htec.api.dto.airport.AirPortDtoRequestBean;
 import com.htec.api.dto.airport.AitPortDtoRequest;
 import com.htec.api.dto.route.RouteDtoRequest;
 import com.htec.entity.Airport;
@@ -35,18 +36,30 @@ public class AirPortServiceImpl implements AirPortService {
     @Override
     @Transactional
     public List<Airport> save(List<AitPortDtoRequest> aitPortDtoRequestList) {
-           List<Airport> airPorts =  airPortRepository.saveAll(
-           aitPortDtoRequestList.stream().map(a -> {
+       List<Airport>airports = new ArrayList<>();
+        for(AitPortDtoRequest a :aitPortDtoRequestList){
             Country country = countryRepository.findByCountryName(a.getCountryName()).
                     orElseGet(() -> countryRepository.save(new Country(a.getCountryName())));
-            a.setCountId(country.getId());
+           // a.setCountId(country.getId());
             City city = cityRepository.findByCityName(a.getCityName()).
-                    orElseGet(() -> cityRepository.save(new City(a.getCityName(), country)));
-            a.setCityId(city.getId());
+                    orElseGet(() -> cityRepository.save(new City(a.getCityName(),"", country)));
+            //a.setCityId(city.getId());
+            airports.add(airPortMapper.toAirPort(a,country,city));
 
-            return airPortMapper.toAirPort(a);
-        }).collect(Collectors.toList()));
-        return airPortMapper.toAirPortDto(airPorts);
+        }
+        airPortRepository.saveAll(airports);
+//        List<Airport> airPorts =  airPortRepository.saveAll(
+//           aitPortDtoRequestList.stream().map(a -> {
+//            Country country = countryRepository.findByCountryName(a.getCountryName()).
+//                    orElseGet(() -> countryRepository.save(new Country(a.getCountryName())));
+//            a.setCountId(country.getId());
+//            City city = cityRepository.findByCityName(a.getCityName()).
+//                    orElseGet(() -> cityRepository.save(new City(a.getCityName(), country)));
+//            a.setCityId(city.getId());
+//
+//            return airPortMapper.toAirPort(a);
+//        }).collect(Collectors.toList()));
+        return airPortMapper.toAirPortDto(airports);
     }
 
     @Override

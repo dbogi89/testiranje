@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,13 +32,13 @@ public class AirPortUploadApi {
     private final AirPortService airPortService;
 
     @PostMapping(value = "/airPorts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> uploadAirPort(@RequestParam("file") MultipartFile  multipartFile) {
-        if (multipartFile.isEmpty())
+    public ResponseEntity<Response> uploadAirPort(@RequestParam("file")  MultipartFile file) {
+        if (file.isEmpty())
             return new ResponseEntity<>(Response.builder().code(Constants.NOK).content("File not valid").build(), HttpStatus.BAD_REQUEST);
 
         try {
             Response documentResponse =
-                    DocumentUtil.parseDocument("CSV", multipartFile, AitPortDtoRequest.class, new AirPortDtoRequestBean());
+                    DocumentUtil.parseDocument("CSV", file, AitPortDtoRequest.class, new AirPortDtoRequestBean());
             List<AitPortDtoRequest> aitPortDtoRequestList = (List<AitPortDtoRequest>) documentResponse.getContent();
             return ResponseEntity.ok().body(Response.builder().code(Constants.OK).content(airPortService.save(aitPortDtoRequestList)).build());
 
@@ -45,7 +46,7 @@ public class AirPortUploadApi {
             return new ResponseEntity<>(Response.builder().code(Constants.NOK).content("Parse file problem").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PostMapping("/routes")
+    @PostMapping(value = "/routes",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> uploadRoutes(@RequestParam("file") MultipartFile  multipartFile){
         if(multipartFile.isEmpty())
             return new ResponseEntity<>(Response.builder().code(Constants.NOK).content("File not valid").build(), HttpStatus.BAD_REQUEST);

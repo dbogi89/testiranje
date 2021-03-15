@@ -22,7 +22,7 @@ public class DocumentServiceImplCSV implements DocumentService{
         List<T> csvList;
         Reader bufferedReader = null;
         try {
-            bufferedReader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
+            bufferedReader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream(),"UTF-8"));
             CsvToBean<T> csvFile = new CsvToBeanBuilder<T>(bufferedReader)
                     .withType(type)
                     .withVerifier(bean)
