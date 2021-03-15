@@ -1,6 +1,5 @@
 package com.htec.api.v1;
 
-
 import com.htec.api.dto.response.ErrorResponse;
 import com.htec.exception.CityException;
 import com.htec.exception.CommnetException;
@@ -27,9 +26,10 @@ import java.util.List;
 @RestControllerAdvice
 @Slf4j
 public class CommonResponseExceptionHandler extends ResponseEntityExceptionHandler {
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
+            HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Validation error in rest API", ex);
         final List<String> errors = new ArrayList<String>();
         ex.getBindingResult().getFieldErrors().forEach(fieldError -> errors.add(fieldError.getDefaultMessage()));
@@ -74,12 +74,10 @@ public class CommonResponseExceptionHandler extends ResponseEntityExceptionHandl
                 ErrorResponse.of(
                         HttpStatus.BAD_REQUEST,
                         1004,
-
                         "",
                         e.getMessage())
         );
     }
-
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> globalExceptionHandler(Exception e, WebRequest webRequest) {

@@ -16,6 +16,7 @@ import java.util.List;
 @Builder
 @Data
 public class CityAndComments {
+
     private CityDtoResponse city;
     private List<Comment> comments;
 

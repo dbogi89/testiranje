@@ -17,10 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-
 
 /**
  * Created by dbogicevic
@@ -29,16 +27,18 @@ import java.util.List;
 @RequestMapping("api/v1/upload")
 @AllArgsConstructor
 public class AirPortUploadApi {
+
     private final AirPortService airPortService;
 
     @PostMapping(value = "/airPorts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> uploadAirPort(@RequestParam("file")  MultipartFile file) {
-        if (file.isEmpty())
+    public ResponseEntity<Response> uploadAirPort(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
             return new ResponseEntity<>(Response.builder().code(Constants.NOK).content("File not valid").build(), HttpStatus.BAD_REQUEST);
+        }
 
         try {
-            Response documentResponse =
-                    DocumentUtil.parseDocument("CSV", file, AitPortDtoRequest.class, new AirPortDtoRequestBean());
+            Response documentResponse
+                    = DocumentUtil.parseDocument("CSV", file, AitPortDtoRequest.class, new AirPortDtoRequestBean());
             List<AitPortDtoRequest> aitPortDtoRequestList = (List<AitPortDtoRequest>) documentResponse.getContent();
             return ResponseEntity.ok().body(airPortService.save(aitPortDtoRequestList));
 
@@ -46,24 +46,26 @@ public class AirPortUploadApi {
             return new ResponseEntity<>(Response.builder().code(Constants.NOK).content("Parse file problem").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PostMapping(value = "/routes",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> uploadRoutes(@RequestParam("file") MultipartFile  multipartFile){
-        if(multipartFile.isEmpty())
+
+    @PostMapping(value = "/routes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response> uploadRoutes(@RequestParam("file") MultipartFile multipartFile) {
+        if (multipartFile.isEmpty()) {
             return new ResponseEntity<>(Response.builder().code(Constants.NOK).content("File not valid").build(), HttpStatus.BAD_REQUEST);
+        }
 
         try {
-            Response documentResponse = DocumentUtil.parseDocument("CSV" , multipartFile, RouteDtoRequest.class, new RouteDtoRequestBean());
+            Response documentResponse = DocumentUtil.parseDocument("CSV", multipartFile, RouteDtoRequest.class, new RouteDtoRequestBean());
             List<RouteDtoRequest> routeDtoRequests = (List<RouteDtoRequest>) documentResponse.getContent();
             return ResponseEntity.ok().body(airPortService.saveRoute(routeDtoRequests));
 
         } catch (IOException e) {
-            return new ResponseEntity<>(Response.builder().code(Constants.NOK).content("Parse file problem").build(),HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(
+                    Response.builder().
+                            code(Constants.NOK).
+                            content("Parse file problem")
+                            .build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-
     }
-
-
-
 
 }

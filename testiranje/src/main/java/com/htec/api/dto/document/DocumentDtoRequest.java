@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class DocumentDtoRequest {
-    private String documentType;
 
+    private String documentType;
 
 }

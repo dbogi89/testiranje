@@ -13,14 +13,11 @@ public class ErrorResponse {
 
     private final LocalDateTime timestamp;
 
-
     private final int status;
-
 
     private final int code;
 
     private String error;
-
 
     private String description;
 

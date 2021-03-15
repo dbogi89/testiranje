@@ -11,12 +11,12 @@ import java.util.List;
 /**
  * Created by dbogicevic
  */
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
 public class CityDtoResponse {
+
     private Long idCity;
     private String cityName;
     private String countryName;

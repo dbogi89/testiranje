@@ -1,4 +1,5 @@
 package com.htec.service.impl;
+
 import com.htec.api.dto.city.CityDtoRequest;
 import com.htec.api.dto.city.CitySerach;
 import com.htec.api.dto.comment.CommentDtoRequest;
@@ -40,15 +41,17 @@ public class CityServiceImpl implements CityService {
     @Transactional
     public CityDtoResponse createCity(CityDtoRequest cityDtoRequest) {
         Optional<Country> countryDataBase = countryRepository.findByCountryName(cityDtoRequest.getCountryName());
-        Optional<City> cityDatabase =  cityRepository.findByCityName(cityDtoRequest.getCityName());
-        if(cityDatabase.isPresent())throw new CityException("City exist");
+        Optional<City> cityDatabase = cityRepository.findByCityName(cityDtoRequest.getCityName());
+        if (cityDatabase.isPresent()) {
+            throw new CityException("City exist");
+        }
         City city = cityMapper.toCity(cityDtoRequest);
-        if(!countryDataBase.isPresent()) {
+        if (!countryDataBase.isPresent()) {
             Country country = new Country();
             country.setCountryName(cityDtoRequest.getCountryName());
             countryRepository.save(country);
             city.setCountry(country);
-        }else {
+        } else {
             city.setCountry(countryDataBase.get());
         }
         return cityMapper.toCityResponse(cityRepository.save(city));
@@ -61,8 +64,8 @@ public class CityServiceImpl implements CityService {
         List<City> cities = cityRepository.findByCityNameContaining(citySerach.getCityName());
         if (limit == 0) {
             cityDtoResponses = cities.stream()
-            .map(cityMapper::toCityResponse)
-            .collect(Collectors.toList());
+                    .map(cityMapper::toCityResponse)
+                    .collect(Collectors.toList());
 
         } else {
             for (City city : cities) {
@@ -78,24 +81,22 @@ public class CityServiceImpl implements CityService {
         return cityDtoResponses;
     }
 
-
-
-    private Comment findByComment(Long idComment){
-    return commentRepository.findById(idComment)
-            .orElseThrow(()->new CommnetException("City not exist"));
-}
+    private Comment findByComment(Long idComment) {
+        return commentRepository.findById(idComment)
+                .orElseThrow(() -> new CommnetException("City not exist"));
+    }
 
     @Transactional
-    public void updateComment(Long idComment, CommentDtoRequest commentDtoRequest){
-        Comment comment =  findByComment(idComment);
+    public void updateComment(Long idComment, CommentDtoRequest commentDtoRequest) {
+        Comment comment = findByComment(idComment);
         comment.setDescription(commentDtoRequest.getDescription());
         commentRepository.save(comment);
 
     }
 
     @Transactional
-    public void deleteComment(Long idComment){
-        Comment comment =  findByComment(idComment);
+    public void deleteComment(Long idComment) {
+        Comment comment = findByComment(idComment);
         commentRepository.delete(comment);
     }
 
@@ -103,7 +104,7 @@ public class CityServiceImpl implements CityService {
     @Transactional
     public Comment createComment(Long idCity, CommentDtoRequest commentDtoRequest) {
         City city = cityRepository.findById(idCity)
-                .orElseThrow(()-> new CityException("City not exist"));
+                .orElseThrow(() -> new CityException("City not exist"));
         Comment comment = cityMapper.toComment(commentDtoRequest);
         city.addComment(comment);
         return commentRepository.save(comment);

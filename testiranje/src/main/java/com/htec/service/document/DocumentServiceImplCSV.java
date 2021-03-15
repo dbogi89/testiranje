@@ -15,14 +15,15 @@ import java.util.List;
 /**
  * Created by dbogicevic
  */
-public class DocumentServiceImplCSV implements DocumentService{
+public class DocumentServiceImplCSV implements DocumentService {
+
     @Override
     public <T> Response generate(MultipartFile multipartFile, Class<T> type,
-                                 BeanVerifier<T> bean) throws IOException {
+            BeanVerifier<T> bean) throws IOException {
         List<T> csvList;
         Reader bufferedReader = null;
         try {
-            bufferedReader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream(),"UTF-8"));
+            bufferedReader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream(), "UTF-8"));
             CsvToBean<T> csvFile = new CsvToBeanBuilder<T>(bufferedReader)
                     .withType(type)
                     .withVerifier(bean)
@@ -30,8 +31,10 @@ public class DocumentServiceImplCSV implements DocumentService{
                     .build();
 
             csvList = csvFile.parse();
-        }finally {
-            if(bufferedReader != null)bufferedReader.close();
+        } finally {
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
         }
         return Response.builder().content(csvList).build();
 

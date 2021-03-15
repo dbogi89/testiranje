@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CityMapper {
 
-    public City toCity(CityDtoRequest cityDtoRequest){
+    public City toCity(CityDtoRequest cityDtoRequest) {
         City city = new City();
         city.setCityName(cityDtoRequest.getCityName());
         city.setDescription(cityDtoRequest.getDescription());
@@ -30,7 +30,6 @@ public class CityMapper {
                 .build();
 
     }
-
 
     public Comment toComment(CommentDtoRequest commentDtoRequest) {
         Comment comment = new Comment();

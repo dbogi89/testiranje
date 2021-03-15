@@ -7,21 +7,18 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Id;
 
-
 /**
  * Created by dbogicevic
  */
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class RouteDtoRequest {
+
     @CsvBindByPosition(position = 0)
     private String airlineCode;
-
     @CsvBindByPosition(position = 1)
     private String airlineId;
-
     @CsvBindByPosition(position = 6)
     private String codeShare;
     @CsvBindByPosition(position = 7)

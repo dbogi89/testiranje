@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class AirPortServiceImpl implements AirPortService {
+
     private final CityRepository cityRepository;
     private final CountryRepository countryRepository;
     private final AirPortRepository airPortRepository;
@@ -40,16 +41,16 @@ public class AirPortServiceImpl implements AirPortService {
     @Transactional
     public Response save(List<AitPortDtoRequest> aitPortDtoRequestList) {
         airPortRepository.saveAll(
-           aitPortDtoRequestList.stream().map(a -> {
-               Country country = countryRepository.findByCountryName(a.getCountryName()).
-                    orElseGet(() -> countryRepository.save(new Country(a.getCountryName())));
-               City city = cityRepository.findByCityName(a.getCityName()).
-                    orElseGet(() -> cityRepository.save(new City(a.getCityName(),"", country)));
+                aitPortDtoRequestList.stream().map(a -> {
+                    Country country = countryRepository.findByCountryName(a.getCountryName()).
+                            orElseGet(() -> countryRepository.save(new Country(a.getCountryName())));
+                    City city = cityRepository.findByCityName(a.getCityName()).
+                            orElseGet(() -> cityRepository.save(new City(a.getCityName(), "", country)));
 
-            return airPortMapper.toAirPort(a,country,city);
-        }).collect(Collectors.toList()));
+                    return airPortMapper.toAirPort(a, country, city);
+                }).collect(Collectors.toList()));
 
-      return Response.builder()
+        return Response.builder()
                 .description("Upload file!!")
                 .code(Constants.OK)
                 .content("Ok")
@@ -59,11 +60,11 @@ public class AirPortServiceImpl implements AirPortService {
     @Override
     @Transactional
     public Response saveRoute(List<RouteDtoRequest> routeDtoRequests) {
-        List<Route>routes = new ArrayList<>();
-        for(RouteDtoRequest r: routeDtoRequests) {
-           Optional<Airport> sourceAirPort = airPortRepository.findById(airPortMapper.isNumeric(r.getSourceAirPortId()));
-           Optional<Airport> destinationAirPort  = airPortRepository.findById(airPortMapper.isNumeric(r.getDestinationAirPortId()));
-            if(sourceAirPort.isPresent() && destinationAirPort.isPresent()){
+        List<Route> routes = new ArrayList<>();
+        for (RouteDtoRequest r : routeDtoRequests) {
+            Optional<Airport> sourceAirPort = airPortRepository.findById(airPortMapper.isNumeric(r.getSourceAirPortId()));
+            Optional<Airport> destinationAirPort = airPortRepository.findById(airPortMapper.isNumeric(r.getDestinationAirPortId()));
+            if (sourceAirPort.isPresent() && destinationAirPort.isPresent()) {
                 Route route = airPortMapper.toRoute(r);
                 route.setSourceAirPort(sourceAirPort.get());
                 route.setDestinationAirPort(destinationAirPort.get());
@@ -77,6 +78,5 @@ public class AirPortServiceImpl implements AirPortService {
                 .content("Ok")
                 .build();
     }
-
 
 }

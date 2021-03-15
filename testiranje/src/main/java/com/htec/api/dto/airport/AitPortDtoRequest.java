@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 /**
  * Created by dbogicevic
  */
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -58,7 +57,5 @@ public class AitPortDtoRequest {
 
     @CsvBindByPosition(position = 13)
     private String source;
-
-
 
 }
