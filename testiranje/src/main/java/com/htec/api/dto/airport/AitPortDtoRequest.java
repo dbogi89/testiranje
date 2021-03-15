@@ -58,8 +58,7 @@ public class AitPortDtoRequest {
 
     @CsvBindByPosition(position = 13)
     private String source;
-    private Long countId;
-    private Long cityId;
+
 
 
 }

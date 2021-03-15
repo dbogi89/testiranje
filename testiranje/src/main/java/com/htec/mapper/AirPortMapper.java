@@ -62,14 +62,29 @@ public class AirPortMapper {
         return null;
     }
 
+    public Long isNumeric(String str) {
+        try {
+            return Long.parseLong(str);
+        } catch(NumberFormatException e){
+            return 0L;
+        }
+    }
+    public Boolean isBooleanString(String str) {
+        try {
+            return Boolean.parseBoolean(str);
+        } catch(Exception e){
+            return true;
+        }
+    }
     public Route toRoute(RouteDtoRequest r) {
         Route route = new Route();
         route.setAirlineCode(r.getAirlineCode());
-        route.setAirlineId(r.getAirlineId());
-        route.setCodeShare(r.getCodeShare());
+        route.setAirlineId(isNumeric(r.getAirlineId()));
+        route.setCodeShare(isBooleanString(r.getCodeShare()));
         route.setEquipment(r.getEquipment());
         route.setPrice(r.getPrice());
         route.setStops(r.getStops());
+        route.setRoutePk(new RoutePk(r.getDestinationCode(), r.getSourceCode()));
         return route;
     }
 }

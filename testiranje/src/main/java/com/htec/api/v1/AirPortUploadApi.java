@@ -40,7 +40,7 @@ public class AirPortUploadApi {
             Response documentResponse =
                     DocumentUtil.parseDocument("CSV", file, AitPortDtoRequest.class, new AirPortDtoRequestBean());
             List<AitPortDtoRequest> aitPortDtoRequestList = (List<AitPortDtoRequest>) documentResponse.getContent();
-            return ResponseEntity.ok().body(Response.builder().code(Constants.OK).content(airPortService.save(aitPortDtoRequestList)).build());
+            return ResponseEntity.ok().body(airPortService.save(aitPortDtoRequestList));
 
         } catch (IOException e) {
             return new ResponseEntity<>(Response.builder().code(Constants.NOK).content("Parse file problem").build(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -54,7 +54,7 @@ public class AirPortUploadApi {
         try {
             Response documentResponse = DocumentUtil.parseDocument("CSV" , multipartFile, RouteDtoRequest.class, new RouteDtoRequestBean());
             List<RouteDtoRequest> routeDtoRequests = (List<RouteDtoRequest>) documentResponse.getContent();
-            return ResponseEntity.ok().body(Response.builder().code(Constants.OK).content(airPortService.saveRoute(routeDtoRequests)).build());
+            return ResponseEntity.ok().body(airPortService.saveRoute(routeDtoRequests));
 
         } catch (IOException e) {
             return new ResponseEntity<>(Response.builder().code(Constants.NOK).content("Parse file problem").build(),HttpStatus.INTERNAL_SERVER_ERROR);

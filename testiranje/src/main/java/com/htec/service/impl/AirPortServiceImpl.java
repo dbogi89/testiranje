@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -60,12 +61,12 @@ public class AirPortServiceImpl implements AirPortService {
     public Response saveRoute(List<RouteDtoRequest> routeDtoRequests) {
         List<Route>routes = new ArrayList<>();
         for(RouteDtoRequest r: routeDtoRequests) {
-            Airport sourceAirPort = airPortRepository.findById(r.getSourceAirPortId()).get();
-            Airport destinationAirPort  = airPortRepository.findById(r.getDestinationAirPortId()).get();
-            if(sourceAirPort != null && destinationAirPort != null){
+           Optional<Airport> sourceAirPort = airPortRepository.findById(airPortMapper.isNumeric(r.getSourceAirPortId()));
+           Optional<Airport> destinationAirPort  = airPortRepository.findById(airPortMapper.isNumeric(r.getDestinationAirPortId()));
+            if(sourceAirPort.isPresent() && destinationAirPort.isPresent()){
                 Route route = airPortMapper.toRoute(r);
-                route.setSourceAirPort(sourceAirPort);
-                route.setDestinationAirPort(destinationAirPort);
+                route.setSourceAirPort(sourceAirPort.get());
+                route.setDestinationAirPort(destinationAirPort.get());
                 routes.add(route);
             }
         }
@@ -76,4 +77,6 @@ public class AirPortServiceImpl implements AirPortService {
                 .content("Ok")
                 .build();
     }
+
+
 }

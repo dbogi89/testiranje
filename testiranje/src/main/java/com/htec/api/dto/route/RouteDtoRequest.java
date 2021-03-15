@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Id;
+
 
 /**
  * Created by dbogicevic
@@ -18,18 +20,22 @@ public class RouteDtoRequest {
     private String airlineCode;
 
     @CsvBindByPosition(position = 1)
-    private Long airlineId;
+    private String airlineId;
 
-    @CsvBindByPosition(position = 2)
-    private Boolean codeShare;
-    @CsvBindByPosition(position = 3)
-    private Integer stops;
-    @CsvBindByPosition(position = 4)
-    private String equipment;
-    @CsvBindByPosition(position = 5)
-    private Double price;
     @CsvBindByPosition(position = 6)
-    private Long destinationAirPortId;
+    private String codeShare;
     @CsvBindByPosition(position = 7)
-    private Long sourceAirPortId;
+    private Integer stops;
+    @CsvBindByPosition(position = 8)
+    private String equipment;
+    @CsvBindByPosition(position = 9)
+    private Double price;
+    @CsvBindByPosition(position = 5)
+    private String destinationAirPortId;
+    @CsvBindByPosition(position = 3)
+    private String sourceAirPortId;
+    @CsvBindByPosition(position = 2)
+    private String sourceCode;
+    @CsvBindByPosition(position = 4)
+    private String destinationCode;
 }

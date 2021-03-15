@@ -11,6 +11,6 @@ public class RouteDtoRequestBean implements BeanVerifier<RouteDtoRequest> {
     @Override
     public boolean verifyBean(RouteDtoRequest routeDtoRequest) throws CsvConstraintViolationException {
 
-        return routeDtoRequest.getAirlineId()!=0 && routeDtoRequest.getSourceAirPortId() != 0 && routeDtoRequest.getDestinationAirPortId()!=0;
+        return !routeDtoRequest.getAirlineId().equals("0");
     }
 }
