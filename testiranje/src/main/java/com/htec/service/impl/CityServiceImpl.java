@@ -82,7 +82,7 @@ public class CityServiceImpl implements CityService {
 
     private Comment findByComment(Long idComment) {
         return commentRepository.findById(idComment)
-                .orElseThrow(() -> new CommnetException("City not exist"));
+                .orElseThrow(() -> new CommnetException("Comment not exist"));
     }
 
     @Transactional
