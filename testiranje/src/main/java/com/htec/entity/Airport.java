@@ -15,7 +15,6 @@ import java.util.List;
 @ToString(exclude = {"destinationRoutes", "sourceRoutes"})
 public class Airport {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NonNull
     @Basic(optional = false)

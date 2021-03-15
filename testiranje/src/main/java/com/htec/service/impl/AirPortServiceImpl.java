@@ -2,7 +2,9 @@ package com.htec.service.impl;
 
 import com.htec.api.dto.airport.AirPortDtoRequestBean;
 import com.htec.api.dto.airport.AitPortDtoRequest;
+import com.htec.api.dto.document.Response;
 import com.htec.api.dto.route.RouteDtoRequest;
+import com.htec.constants.Constants;
 import com.htec.entity.Airport;
 import com.htec.entity.City;
 import com.htec.entity.Country;
@@ -35,36 +37,27 @@ public class AirPortServiceImpl implements AirPortService {
 
     @Override
     @Transactional
-    public List<Airport> save(List<AitPortDtoRequest> aitPortDtoRequestList) {
-       List<Airport>airports = new ArrayList<>();
-        for(AitPortDtoRequest a :aitPortDtoRequestList){
-            Country country = countryRepository.findByCountryName(a.getCountryName()).
+    public Response save(List<AitPortDtoRequest> aitPortDtoRequestList) {
+        airPortRepository.saveAll(
+           aitPortDtoRequestList.stream().map(a -> {
+               Country country = countryRepository.findByCountryName(a.getCountryName()).
                     orElseGet(() -> countryRepository.save(new Country(a.getCountryName())));
-           // a.setCountId(country.getId());
-            City city = cityRepository.findByCityName(a.getCityName()).
+               City city = cityRepository.findByCityName(a.getCityName()).
                     orElseGet(() -> cityRepository.save(new City(a.getCityName(),"", country)));
-            //a.setCityId(city.getId());
-            airports.add(airPortMapper.toAirPort(a,country,city));
 
-        }
-        airPortRepository.saveAll(airports);
-//        List<Airport> airPorts =  airPortRepository.saveAll(
-//           aitPortDtoRequestList.stream().map(a -> {
-//            Country country = countryRepository.findByCountryName(a.getCountryName()).
-//                    orElseGet(() -> countryRepository.save(new Country(a.getCountryName())));
-//            a.setCountId(country.getId());
-//            City city = cityRepository.findByCityName(a.getCityName()).
-//                    orElseGet(() -> cityRepository.save(new City(a.getCityName(), country)));
-//            a.setCityId(city.getId());
-//
-//            return airPortMapper.toAirPort(a);
-//        }).collect(Collectors.toList()));
-        return airPortMapper.toAirPortDto(airports);
+            return airPortMapper.toAirPort(a,country,city);
+        }).collect(Collectors.toList()));
+
+      return Response.builder()
+                .description("Upload file!!")
+                .code(Constants.OK)
+                .content("Ok")
+                .build();
     }
 
     @Override
     @Transactional
-    public List<Route> saveRoute(List<RouteDtoRequest> routeDtoRequests) {
+    public Response saveRoute(List<RouteDtoRequest> routeDtoRequests) {
         List<Route>routes = new ArrayList<>();
         for(RouteDtoRequest r: routeDtoRequests) {
             Airport sourceAirPort = airPortRepository.findById(r.getSourceAirPortId()).get();
@@ -77,6 +70,10 @@ public class AirPortServiceImpl implements AirPortService {
             }
         }
         routeRepository.saveAll(routes);
-        return null;
+        return Response.builder()
+                .description("Upload file!!")
+                .code(Constants.OK)
+                .content("Ok")
+                .build();
     }
 }
