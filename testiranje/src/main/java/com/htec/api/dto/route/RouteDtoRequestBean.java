@@ -1,6 +1,5 @@
 package com.htec.api.dto.route;
 
-import com.htec.api.dto.route.RouteDtoRequest;
 import com.opencsv.bean.BeanVerifier;
 import com.opencsv.exceptions.CsvConstraintViolationException;
 

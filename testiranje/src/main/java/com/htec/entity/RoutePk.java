@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.Embeddable;
-import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
@@ -18,7 +17,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class RoutePk implements Serializable {
     @NonNull
-     private String sourceCode;
+    private String sourceCode;
     @NonNull
     private String destinationCode;
 }

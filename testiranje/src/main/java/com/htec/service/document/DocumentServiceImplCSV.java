@@ -19,24 +19,17 @@ public class DocumentServiceImplCSV implements DocumentService {
 
     @Override
     public <T> Response generate(MultipartFile multipartFile, Class<T> type,
-            BeanVerifier<T> bean) throws IOException {
-        List<T> csvList;
-        Reader bufferedReader = null;
-        try {
-            bufferedReader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream(), "UTF-8"));
+                                 BeanVerifier<T> bean) throws IOException {
+
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream(), "UTF-8"))) {
             CsvToBean<T> csvFile = new CsvToBeanBuilder<T>(bufferedReader)
                     .withType(type)
                     .withVerifier(bean)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
 
-            csvList = csvFile.parse();
-        } finally {
-            if (bufferedReader != null) {
-                bufferedReader.close();
-            }
-        }
-        return Response.builder().content(csvList).build();
+            return Response.builder().content(csvFile.parse()).build();
 
+        }
     }
 }
