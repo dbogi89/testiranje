@@ -1,7 +1,6 @@
 package com.htec.api.dto.airport;
 
 import com.opencsv.bean.CsvBindByPosition;
-import com.opencsv.bean.processor.PreAssignmentProcessor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

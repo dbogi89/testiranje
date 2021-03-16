@@ -3,10 +3,14 @@ package com.htec.api.v1;
 /**
  * Created by dbogicevic
  */
+import com.htec.api.dto.document.Response;
 import com.htec.api.dto.user.JwtResponseDto;
 import com.htec.api.dto.user.LoginCredentials;
-import com.htec.jwt.JwtProvider;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.htec.api.dto.user.UserDtoRequest;
+import com.htec.security.jwt.JwtProvider;
+import com.htec.service.impl.UserDetailsServiceImpl;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,16 +23,13 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/auth")
-@CrossOrigin
+@AllArgsConstructor
 public class PublicApi {
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final UserDetailsServiceImpl userService;
 
-    @Autowired
-    public PublicApi(AuthenticationManager authenticationManager, JwtProvider jwtProvider) {
-        this.authenticationManager = authenticationManager;
-        this.jwtProvider = jwtProvider;
-    }
+
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginCredentials loginCredentials) {
@@ -42,5 +43,11 @@ public class PublicApi {
         String jwt = jwtProvider.generateJwtToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return ResponseEntity.ok(new JwtResponseDto(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+    }
+
+    @PostMapping("/registration")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Response createUser(@RequestBody UserDtoRequest userDtoRequest) {
+        return userService.saveUser(userDtoRequest);
     }
 }

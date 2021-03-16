@@ -2,11 +2,12 @@ package com.htec.api.v1;
 
 import com.htec.api.dto.airport.AirPortDtoRequestBean;
 import com.htec.api.dto.airport.AitPortDtoRequest;
-import com.htec.api.dto.document.DocumentDtoRequest;
 import com.htec.api.dto.document.Response;
 import com.htec.api.dto.route.RouteDtoRequest;
 import com.htec.api.dto.route.RouteDtoRequestBean;
 import com.htec.constants.Constants;
+import com.htec.entity.Role;
+import com.htec.entity.RoleName;
 import com.htec.service.AirPortService;
 import com.htec.util.DocumentUtil;
 
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.security.RolesAllowed;
 import java.io.IOException;
 import java.util.List;
 
@@ -26,6 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/upload")
 @AllArgsConstructor
+@RolesAllowed(Role.ROLE_ADMIN)
 public class AirPortUploadApi {
 
     private final AirPortService airPortService;

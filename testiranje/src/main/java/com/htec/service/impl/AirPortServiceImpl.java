@@ -1,6 +1,5 @@
 package com.htec.service.impl;
 
-import com.htec.api.dto.airport.AirPortDtoRequestBean;
 import com.htec.api.dto.airport.AitPortDtoRequest;
 import com.htec.api.dto.document.Response;
 import com.htec.api.dto.route.RouteDtoRequest;

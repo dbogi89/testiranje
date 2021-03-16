@@ -14,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "roles")
 @Entity
+@Builder
 @Table(name = "USER", schema = "public",uniqueConstraints = {
         @UniqueConstraint(columnNames = {
                 "username"

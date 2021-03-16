@@ -1,4 +1,4 @@
-package com.htec.jwt;
+package com.htec.security.jwt;
 import com.htec.entity.UserPrinciple;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package com.htec.jwt;
+package com.htec.security.jwt;
 import com.htec.service.impl.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
