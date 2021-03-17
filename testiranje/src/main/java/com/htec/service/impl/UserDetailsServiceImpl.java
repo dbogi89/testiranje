@@ -46,6 +46,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             userRepository.save(user);
             return Response.builder().content("OK").code(Constants.OK).description("Create user").build();
         }catch (Exception e){
+            e.printStackTrace();
             throw new UsernameNotFoundException("The user not insert ");
         }
 

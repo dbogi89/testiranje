@@ -4,6 +4,7 @@ import com.opencsv.bean.CsvBindByPosition;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.val;
 
 
 /**
@@ -34,4 +35,10 @@ public class RouteDtoRequest {
     private String sourceCode;
     @CsvBindByPosition(position = 4)
     private String destinationCode;
+
+    public RouteDtoRequest(double v, String source, String des) {
+        this.price = v;
+        this.sourceCode = source;
+        this.destinationCode = des;
+    }
 }
