@@ -35,5 +35,5 @@ public class RouteDtoRequest {
     private String sourceCode;
     @CsvBindByPosition(position = 4)
     private String destinationCode;
-    
+
 }
