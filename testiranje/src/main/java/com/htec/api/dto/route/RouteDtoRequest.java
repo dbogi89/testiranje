@@ -35,10 +35,5 @@ public class RouteDtoRequest {
     private String sourceCode;
     @CsvBindByPosition(position = 4)
     private String destinationCode;
-
-    public RouteDtoRequest(double v, String source, String des) {
-        this.price = v;
-        this.sourceCode = source;
-        this.destinationCode = des;
-    }
+    
 }
