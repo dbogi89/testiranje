@@ -147,7 +147,7 @@ public class CityServiceImpl implements CityService {
 
     private List<Airport> getValue(ResponseFlight responseFlight){
         List<String>paths = Arrays.stream(responseFlight.getPath().split(",")).collect(Collectors.toList());
-        List<Route>routes = routeRepository.findByRouteDestinationCodeIn(paths);
+        List<Route>routes = routeRepository.findByRoutePkAndDestinationCode(paths);
         return routes.stream().map(r -> r.getDestinationAirPort()).collect(Collectors.toList());
 
     }

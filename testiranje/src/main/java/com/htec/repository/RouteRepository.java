@@ -3,6 +3,7 @@ package com.htec.repository;
 import com.htec.entity.Route;
 import com.htec.entity.RoutePk;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,5 +13,6 @@ import java.util.List;
  */
 @Repository
 public interface RouteRepository extends JpaRepository<Route, RoutePk> {
-    List<Route> findByRouteDestinationCodeIn(List<String> routes);
+    @Query("SELECT r from Route r WHERE  r.routePk.destinationCode in :routes ")
+    List<Route> findByRoutePkAndDestinationCode(List<String> routes);
 }
