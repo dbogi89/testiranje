@@ -5,26 +5,38 @@ import java.util.Objects;
 
 public class NodeWeighted {
 
-    String name;
+    private String name;
     private boolean visited;
-    LinkedList<EdgeWeighted> edges;
+    private LinkedList<EdgeWeighted> edges;
 
-    NodeWeighted( String name) {
+    public NodeWeighted(String name) {
         this.name = name;
         visited = false;
         edges = new LinkedList<>();
     }
 
-    boolean isVisited() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isVisited() {
         return visited;
     }
 
-    void visit() {
-        visited = true;
+    public void setVisited(boolean visited) {
+        this.visited = visited;
     }
 
-    void unvisit() {
-        visited = false;
+    public LinkedList<EdgeWeighted> getEdges() {
+        return edges;
+    }
+
+    public void setEdges(LinkedList<EdgeWeighted> edges) {
+        this.edges = edges;
     }
 
     @Override

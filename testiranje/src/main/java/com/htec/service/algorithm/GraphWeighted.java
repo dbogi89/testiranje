@@ -9,7 +9,7 @@ public class GraphWeighted {
     private Set<NodeWeighted> nodes;
     private boolean directed;
 
-    GraphWeighted(boolean directed) {
+    public GraphWeighted(boolean directed) {
         this.directed = directed;
         nodes = new HashSet<>();
     }
@@ -30,7 +30,7 @@ public class GraphWeighted {
     private void addEdgeHelper(NodeWeighted a, NodeWeighted b, double weight) {
         // Go through all the edges and see whether that edge has
         // already been added
-        for (EdgeWeighted edge : a.edges) {
+        for (EdgeWeighted edge : a.getEdges()) {
             if (edge.source == a  && edge.destination == b) {
                 // Update the value in case it's a different one now
                 edge.weight = weight;
@@ -39,21 +39,21 @@ public class GraphWeighted {
         }
         // If it hasn't been added already (we haven't returned
         // from the for loop), add the edge
-        a.edges.add(new EdgeWeighted(a, b, weight));
+        a.getEdges().add(new EdgeWeighted(a, b, weight));
     }
     public void printEdges() {
         for (NodeWeighted node : nodes) {
-            LinkedList<EdgeWeighted> edges = node.edges;
+            LinkedList<EdgeWeighted> edges = node.getEdges();
             if(edges == null)return;
 
             if (edges.isEmpty()) {
-                System.out.println("Node " + node.name + " has no edges.");
+                System.out.println("Node " + node.getName() + " has no edges.");
                 continue;
             }
-            System.out.print("Node " + node.name + " has edges to: ");
+            System.out.print("Node " + node.getName() + " has edges to: ");
 
             for (EdgeWeighted edge : edges) {
-                System.out.print(edge.destination.name + "(" + edge.weight + ") ");
+                System.out.print(edge.destination.getName() + "(" + edge.weight + ") ");
                 //printEdges();
             }
             System.out.println();
@@ -62,7 +62,7 @@ public class GraphWeighted {
 
 
     public boolean hasEdge(NodeWeighted source, NodeWeighted destination) {
-        LinkedList<EdgeWeighted> edges = source.edges;
+        LinkedList<EdgeWeighted> edges = source.getEdges();
         for (EdgeWeighted edge : edges) {
             // Again relying on the fact that all classes share the
             // exact same NodeWeighted object
@@ -72,14 +72,14 @@ public class GraphWeighted {
         }
         return false;
     }
-    public void DijkstraShortestPath(NodeWeighted start, NodeWeighted end) {
+    public ResponseFlight dijkstraShortestPath(NodeWeighted start, NodeWeighted end) {
         // We keep track of which path gives us the shortest path for each node
         // by keeping track how we arrived at a particular node, we effectively
         // keep a "pointer" to the parent node of each node, and we follow that
         // path to the start
         HashMap<NodeWeighted, NodeWeighted> changedAt = new HashMap<>();
         changedAt.put(start, null);
-
+        String path = null;
         // Keeps track of the shortest path we've found so far for every node
         HashMap<NodeWeighted, Double> shortestPathMap = new HashMap<>();
 
@@ -93,12 +93,12 @@ public class GraphWeighted {
 
         // Now we go through all the nodes we can go to from the starting node
         // (this keeps the loop a bit simpler)
-        for (EdgeWeighted edge : start.edges) {
+        for (EdgeWeighted edge : start.getEdges()) {
             shortestPathMap.put(edge.destination, edge.weight);
             changedAt.put(edge.destination, start);
         }
 
-        start.visit();
+        start.setVisited(true);
 
         // This loop runs as long as there is an unvisited node that we can
         // reach from any of the nodes we could till then
@@ -108,21 +108,22 @@ public class GraphWeighted {
             // reachable node the path between start and end doesn't exist
             // (they aren't connected)
             if (currentNode == null) {
-                System.out.println("There isn't a path between " + start.name + " and " + end.name);
-                return;
+                System.out.println("There isn't a path between " + start.getName() + " and " + end.getName());
+                return new ResponseFlight();
             }
 
             // If the closest non-visited node is our destination, we want to print the path
             if (currentNode == end) {
                 System.out.println("The path with the smallest weight between "
-                        + start.name + " and " + end.name + " is:");
+                        + start.getName() + " and " + end.getName() + " is:");
 
                 NodeWeighted child = end;
 
                 // It makes no sense to use StringBuilder, since
                 // repeatedly adding to the beginning of the string
                 // defeats the purpose of using StringBuilder
-                String path = end.name;
+                 path = end.getName();
+                //dovuci podatke od aerodromima
                 while (true) {
                     NodeWeighted parent = changedAt.get(child);
                     if (parent == null) {
@@ -132,19 +133,19 @@ public class GraphWeighted {
                     // Since our changedAt map keeps track of child -> parent relations
                     // in order to print the path we need to add the parent before the child and
                     // it's descendants
-                    path = parent.name + " " + path;
+                    path = parent.getName() + " " + path;
                     child = parent;
                 }
                 System.out.println(path);
                 System.out.println("The path costs: " + shortestPathMap.get(end));
-                return;
+                return new ResponseFlight(path, shortestPathMap.get(end));
             }
-            currentNode.visit();
+            currentNode.setVisited(true);
 
             // Now we go through all the unvisited nodes our current node has an edge to
             // and check whether its shortest path value is better when going through our
             // current node than whatever we had before
-            for (EdgeWeighted edge : currentNode.edges) {
+            for (EdgeWeighted edge : currentNode.getEdges()) {
                 if (edge.destination.isVisited())
                     continue;
 

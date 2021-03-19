@@ -23,15 +23,15 @@ public class GraphShow {
         for(RouteDtoRequest r: rute) {
             nodeWeightedSet.add(new NodeWeighted(r.getSourceCode()));
             nodeWeightedSet.add(new NodeWeighted( r.getDestinationCode()));
-            Optional<NodeWeighted> nodeWeighted = nodeWeightedSet.stream().filter(a->a.name.equals(r.getSourceCode())).findFirst();
-            Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a->a.name.equals(r.getDestinationCode())).findFirst();
+            Optional<NodeWeighted> nodeWeighted = nodeWeightedSet.stream().filter(a->a.getName().equals(r.getSourceCode())).findFirst();
+            Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a->a.getName().equals(r.getDestinationCode())).findFirst();
             graphWeighted.addEdge(nodeWeighted.get(),nodeWeighted1.get(), r.getPrice());
         }
         for(NodeWeighted n :nodeWeightedSet){
-            Optional<NodeWeighted> nodeWeighted = nodeWeightedSet.stream().filter(a->a.name.equals("BG")).findFirst();
-            Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a->a.name.equals("NEMACKA")).findFirst();
+            Optional<NodeWeighted> nodeWeighted = nodeWeightedSet.stream().filter(a->a.getName().equals("BG")).findFirst();
+            Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a->a.getName().equals("NEMACKA")).findFirst();
             if(nodeWeighted.isPresent() && nodeWeighted1.isPresent()){
-                graphWeighted.DijkstraShortestPath(nodeWeighted.get(), nodeWeighted1.get());
+                graphWeighted.dijkstraShortestPath(nodeWeighted.get(), nodeWeighted1.get());
                 break;
             }
         }

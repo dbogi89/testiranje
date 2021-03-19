@@ -1,9 +1,13 @@
 package com.htec.mapper;
 
+import com.htec.api.dto.airport.AirportReponse;
 import com.htec.api.dto.airport.AitPortDtoRequest;
+import com.htec.api.dto.airport.TravelDtoResponse;
 import com.htec.api.dto.route.RouteDtoRequest;
 import com.htec.entity.*;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * Created by dbogicevic
@@ -79,5 +83,14 @@ public class AirPortMapper {
         route.setStops(r.getStops());
         route.setRoutePk(new RoutePk(r.getDestinationCode(), r.getSourceCode()));
         return route;
+    }
+
+    public TravelDtoResponse toTravel(List<Airport> airports) {
+        TravelDtoResponse travelDtoResponse = new TravelDtoResponse();
+        travelDtoResponse.setStart(new AirportReponse(airports.get(0).getAirPortName(), airports.get(0).getCityName(),airports.get(0).getCountryName()));
+        travelDtoResponse.setStart(new AirportReponse(airports.get(airports.size()-1).getAirPortName(), airports.get(airports.size()-1).getCityName(),airports.get(airports.size()-1).getCountryName()));
+        for(int i =1 ; i < airports.size()-1; i++)
+            travelDtoResponse.getAirportReponses().add(new AirportReponse(airports.get(i).getAirPortName(), airports.get(i).getCityName(),airports.get(i).getCountryName()));
+        return travelDtoResponse;
     }
 }

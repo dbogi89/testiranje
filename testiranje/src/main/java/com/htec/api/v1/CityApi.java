@@ -13,6 +13,7 @@ import com.htec.service.CityService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -78,6 +79,14 @@ public class CityApi {
             throw new CityException("Limit must be zero or greater");
         }
         return cityService.sreachCity(citySerach, limit);
+
+    }
+
+    @GetMapping("/travel/{from}/{to}")
+    @RolesAllowed(Role.ROLE_USER)
+    public ResponseEntity<Response> findByCheapestFlight(@PathVariable String from, @PathVariable String to) {
+
+        return new ResponseEntity<Response>(cityService.findByCheapestFlight(from, to), HttpStatus.OK);
 
     }
 }

@@ -4,24 +4,27 @@ import com.htec.api.dto.city.CityDtoRequest;
 import com.htec.api.dto.city.CitySerach;
 import com.htec.api.dto.comment.CommentDtoRequest;
 import com.htec.api.dto.city.CityDtoResponse;
-import com.htec.entity.City;
-import com.htec.entity.Comment;
-import com.htec.entity.Country;
+import com.htec.api.dto.document.Response;
+import com.htec.constants.Constants;
+import com.htec.entity.*;
 import com.htec.exception.CityException;
 import com.htec.exception.CommnetException;
+import com.htec.mapper.AirPortMapper;
 import com.htec.mapper.CityMapper;
 import com.htec.repository.CityRepository;
 import com.htec.repository.CommentRepository;
 import com.htec.repository.CountryRepository;
+import com.htec.repository.RouteRepository;
 import com.htec.service.CityService;
+import com.htec.service.algorithm.GraphWeighted;
+import com.htec.service.algorithm.NodeWeighted;
+import com.htec.service.algorithm.ResponseFlight;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +38,8 @@ public class CityServiceImpl implements CityService {
     private final CountryRepository countryRepository;
     private final CityMapper cityMapper;
     private final CommentRepository commentRepository;
+    private final RouteRepository routeRepository;
+    private AirPortMapper airPortMapper;
 
     @Override
     @Transactional
@@ -110,5 +115,41 @@ public class CityServiceImpl implements CityService {
 
     }
 
+    public Response findByCheapestFlight(String from, String to){
+        GraphWeighted graphWeighted = new GraphWeighted(true);
+        Set<NodeWeighted> nodeWeightedSet = new HashSet<>();
+        List<Route>route = routeRepository.findAll();
+        route.forEach(r -> {
+            nodeWeightedSet.add(new NodeWeighted(r.getRoutePk().getSourceCode()));
+            nodeWeightedSet.add(new NodeWeighted(r.getRoutePk().getDestinationCode()));
+            Optional<NodeWeighted> nodeWeighted = nodeWeightedSet.stream().filter(a -> a.getName().equals(r.getRoutePk().getSourceCode())).findFirst();
+            Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a -> a.getName().equals(r.getRoutePk().getDestinationCode())).findFirst();
+            graphWeighted.addEdge(nodeWeighted.get(), nodeWeighted1.get(), r.getPrice());
+        });
+
+        for(NodeWeighted n :nodeWeightedSet){
+            Optional<NodeWeighted> nodeWeighted = nodeWeightedSet.stream().filter(a->a.getName().equals(from)).findFirst();
+            Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a->a.getName().equals(to)).findFirst();
+            if(nodeWeighted.isPresent() && nodeWeighted1.isPresent()){
+               ResponseFlight responseFlight =  graphWeighted.dijkstraShortestPath(nodeWeighted.get(), nodeWeighted1.get());
+                return Response.builder()
+                        .code(Constants.OK)
+                        .description("Ok")
+                        .content(airPortMapper.toTravel(getValue(responseFlight)))
+                        .build();
+            }
+        }
+        return Response.builder()
+                .description("No result")
+                .content(new ResponseFlight())
+                .build();
+    }
+
+    private List<Airport> getValue(ResponseFlight responseFlight){
+        List<String>paths = Arrays.stream(responseFlight.getPath().split(",")).collect(Collectors.toList());
+        List<Route>routes = routeRepository.findByRouteDestinationCodeIn(paths);
+        return routes.stream().map(r -> r.getDestinationAirPort()).collect(Collectors.toList());
+
+    }
 
 }
