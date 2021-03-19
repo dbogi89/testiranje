@@ -5,6 +5,7 @@ import com.htec.api.dto.airport.AitPortDtoRequest;
 import com.htec.api.dto.airport.TravelDtoResponse;
 import com.htec.api.dto.route.RouteDtoRequest;
 import com.htec.entity.*;
+import com.htec.service.algorithm.ResponseFlight;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -85,12 +86,17 @@ public class AirPortMapper {
         return route;
     }
 
-    public TravelDtoResponse toTravel(List<Airport> airports) {
+    public TravelDtoResponse toTravel(List<Airport> airports, ResponseFlight responseFlight) {
         TravelDtoResponse travelDtoResponse = new TravelDtoResponse();
         travelDtoResponse.setStart(new AirportReponse(airports.get(0).getAirPortName(), airports.get(0).getCityName(),airports.get(0).getCountryName()));
-        travelDtoResponse.setStart(new AirportReponse(airports.get(airports.size()-1).getAirPortName(), airports.get(airports.size()-1).getCityName(),airports.get(airports.size()-1).getCountryName()));
+        travelDtoResponse.setEnd(new AirportReponse(airports.get(airports.size()-1).getAirPortName(), airports.get(airports.size()-1).getCityName(),airports.get(airports.size()-1).getCountryName()));
         for(int i =1 ; i < airports.size()-1; i++)
             travelDtoResponse.getAirportReponses().add(new AirportReponse(airports.get(i).getAirPortName(), airports.get(i).getCityName(),airports.get(i).getCountryName()));
+        travelDtoResponse.setPrice(responseFlight.getPrice());
+        Point start = Point.of(airports.get(0).getPoint().getLatitude(), airports.get(0).getPoint().getLongitude());
+        Point end = Point.of(airports.get(airports.size()-1).getPoint().getLatitude(), airports.get(airports.size()-1).getPoint().getLongitude());
+        Double distance = Point.calculateDistance(start, end);
+        travelDtoResponse.setDistance(distance);
         return travelDtoResponse;
     }
 }

@@ -13,6 +13,6 @@ import java.util.List;
  */
 @Repository
 public interface RouteRepository extends JpaRepository<Route, RoutePk> {
-    @Query("SELECT r from Route r WHERE  r.routePk.destinationCode in :routes ")
-    List<Route> findByRoutePkAndDestinationCode(List<String> routes);
+    @Query("SELECT r from Route r WHERE  r.routePk in :routes ")
+    List<Route> findByRoutePkAndDestinationCode(List<RoutePk> routes);
 }

@@ -135,7 +135,7 @@ public class CityServiceImpl implements CityService {
                 return Response.builder()
                         .code(Constants.OK)
                         .description("Ok")
-                        .content(airPortMapper.toTravel(getValue(responseFlight)))
+                        .content(airPortMapper.toTravel(getValue(responseFlight), responseFlight))
                         .build();
             }
         }
@@ -146,8 +146,12 @@ public class CityServiceImpl implements CityService {
     }
 
     private List<Airport> getValue(ResponseFlight responseFlight){
-        List<String>paths = Arrays.stream(responseFlight.getPath().split(",")).collect(Collectors.toList());
-        List<Route>routes = routeRepository.findByRoutePkAndDestinationCode(paths);
+       List<String>paths = Arrays.stream(responseFlight.getPath().split(" ")).collect(Collectors.toList());
+       List<RoutePk>routePkList = new ArrayList<>();
+        for(int i = 0; i < paths.size()-1; i++){
+            routePkList.add(new RoutePk(paths.get(i), paths.get(i+1)));
+        }
+        List<Route>routes = routeRepository.findByRoutePkAndDestinationCode(routePkList);
         return routes.stream().map(r -> r.getDestinationAirPort()).collect(Collectors.toList());
 
     }
