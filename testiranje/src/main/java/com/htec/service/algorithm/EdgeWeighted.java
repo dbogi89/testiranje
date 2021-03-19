@@ -13,7 +13,7 @@ public class EdgeWeighted implements Comparable<EdgeWeighted> {
     }
 
     public String toString() {
-        return String.format("(%s -> %s, %f)", source.getName(), destination.getName(), weight);
+        return String.format("(%s -> %s, %d)", source.getName(), destination.getName(), weight);
     }
 
      public int compareTo(EdgeWeighted otherEdge) {

@@ -118,7 +118,7 @@ public class CityServiceImpl implements CityService {
     public Response findByCheapestFlight(String from, String to){
         GraphWeighted graphWeighted = new GraphWeighted(true);
         Set<NodeWeighted> nodeWeightedSet = new HashSet<>();
-        List<Route>route = routeRepository.findAll();
+        List<Route>route = routeRepository.finaAllRoute();
         route.forEach(r -> {
             nodeWeightedSet.add(new NodeWeighted(r.getRoutePk().getSourceCode()));
             nodeWeightedSet.add(new NodeWeighted(r.getRoutePk().getDestinationCode()));
@@ -127,7 +127,7 @@ public class CityServiceImpl implements CityService {
             graphWeighted.addEdge(nodeWeighted.get(), nodeWeighted1.get(), r.getPrice());
         });
 
-        for(NodeWeighted n :nodeWeightedSet){
+
             Optional<NodeWeighted> nodeWeighted = nodeWeightedSet.stream().filter(a->a.getName().equals(from)).findFirst();
             Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a->a.getName().equals(to)).findFirst();
             if(nodeWeighted.isPresent() && nodeWeighted1.isPresent()){
@@ -138,7 +138,7 @@ public class CityServiceImpl implements CityService {
                         .content(airPortMapper.toTravel(getValue(responseFlight), responseFlight))
                         .build();
             }
-        }
+
         return Response.builder()
                 .description("No result")
                 .content(new ResponseFlight())

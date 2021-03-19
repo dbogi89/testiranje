@@ -27,14 +27,14 @@ public class GraphShow {
             Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a->a.getName().equals(r.getDestinationCode())).findFirst();
             graphWeighted.addEdge(nodeWeighted.get(),nodeWeighted1.get(), r.getPrice());
         }
-        for(NodeWeighted n :nodeWeightedSet){
+
             Optional<NodeWeighted> nodeWeighted = nodeWeightedSet.stream().filter(a->a.getName().equals("BG")).findFirst();
             Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a->a.getName().equals("NEMACKA")).findFirst();
             if(nodeWeighted.isPresent() && nodeWeighted1.isPresent()){
                 graphWeighted.dijkstraShortestPath(nodeWeighted.get(), nodeWeighted1.get());
-                break;
+
             }
-        }
+
 
     }
 }
