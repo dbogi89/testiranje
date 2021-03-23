@@ -1,6 +1,5 @@
 package com.htec.service;
 
-import com.htec.api.dto.airport.TravelDtoResponse;
 import com.htec.api.dto.city.CityDtoRequest;
 import com.htec.api.dto.city.CitySerach;
 import com.htec.api.dto.comment.CommentDtoRequest;

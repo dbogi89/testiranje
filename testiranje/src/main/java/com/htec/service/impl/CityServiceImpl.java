@@ -20,6 +20,7 @@ import com.htec.service.algorithm.GraphWeighted;
 import com.htec.service.algorithm.NodeWeighted;
 import com.htec.service.algorithm.ResponseFlight;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @AllArgsConstructor
+@Slf4j
 public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
@@ -115,10 +117,13 @@ public class CityServiceImpl implements CityService {
 
     }
 
-    public Response findByCheapestFlight(String from, String to){
+    public Response findByCheapestFlight(String from, String to) {
+        long pocetak = System.currentTimeMillis();
         GraphWeighted graphWeighted = new GraphWeighted(true);
         Set<NodeWeighted> nodeWeightedSet = new HashSet<>();
-        List<Route>route = routeRepository.finaAllRoute();
+        List<Route> route = routeRepository.finaAllRoute();
+        long kraj = System.currentTimeMillis();
+        log.info("Posle upita iz baze "+(kraj - pocetak));
         route.forEach(r -> {
             nodeWeightedSet.add(new NodeWeighted(r.getRoutePk().getSourceCode()));
             nodeWeightedSet.add(new NodeWeighted(r.getRoutePk().getDestinationCode()));
@@ -126,18 +131,20 @@ public class CityServiceImpl implements CityService {
             Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a -> a.getName().equals(r.getRoutePk().getDestinationCode())).findFirst();
             graphWeighted.addEdge(nodeWeighted.get(), nodeWeighted1.get(), r.getPrice());
         });
-
-
-            Optional<NodeWeighted> nodeWeighted = nodeWeightedSet.stream().filter(a->a.getName().equals(from)).findFirst();
-            Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a->a.getName().equals(to)).findFirst();
-            if(nodeWeighted.isPresent() && nodeWeighted1.isPresent()){
-               ResponseFlight responseFlight =  graphWeighted.dijkstraShortestPath(nodeWeighted.get(), nodeWeighted1.get());
-                return Response.builder()
-                        .code(Constants.OK)
-                        .description("Ok")
-                        .content(airPortMapper.toTravel(getValue(responseFlight), responseFlight))
-                        .build();
-            }
+        kraj = System.currentTimeMillis();
+        log.info("Posle prve metode "+(kraj - pocetak));
+        Optional<NodeWeighted> nodeWeighted = nodeWeightedSet.stream().filter(a -> a.getName().equals(from)).findFirst();
+        Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a -> a.getName().equals(to)).findFirst();
+        kraj = System.currentTimeMillis();
+        log.info("Pre ifa "+(kraj - pocetak));
+        if (nodeWeighted.isPresent() && nodeWeighted1.isPresent()) {
+            ResponseFlight responseFlight = graphWeighted.dijkstraShortestPath(nodeWeighted.get(), nodeWeighted1.get());
+            return Response.builder()
+                    .code(Constants.OK)
+                    .description("Ok")
+                    .content(airPortMapper.toTravel(getValue(responseFlight), responseFlight))
+                    .build();
+        }
 
         return Response.builder()
                 .description("No result")
@@ -145,13 +152,13 @@ public class CityServiceImpl implements CityService {
                 .build();
     }
 
-    private List<Airport> getValue(ResponseFlight responseFlight){
-       List<String>paths = Arrays.stream(responseFlight.getPath().split(" ")).collect(Collectors.toList());
-       List<RoutePk>routePkList = new ArrayList<>();
-        for(int i = 0; i < paths.size()-1; i++){
-            routePkList.add(new RoutePk(paths.get(i), paths.get(i+1)));
+    private List<Airport> getValue(ResponseFlight responseFlight) {
+        List<String> paths = Arrays.stream(responseFlight.getPath().split(" ")).collect(Collectors.toList());
+        List<RoutePk> routePkList = new ArrayList<>();
+        for (int i = 0; i < paths.size() - 1; i++) {
+            routePkList.add(new RoutePk(paths.get(i), paths.get(i + 1)));
         }
-        List<Route>routes = routeRepository.findByRoutePkAndDestinationCode(routePkList);
+        List<Route> routes = routeRepository.findByRoutePkAndDestinationCode(routePkList);
         return routes.stream().map(r -> r.getDestinationAirPort()).collect(Collectors.toList());
 
     }

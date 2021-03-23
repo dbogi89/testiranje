@@ -7,7 +7,6 @@ import com.htec.api.dto.route.RouteDtoRequest;
 import com.htec.api.dto.route.RouteDtoRequestBean;
 import com.htec.constants.Constants;
 import com.htec.entity.Role;
-import com.htec.entity.RoleName;
 import com.htec.service.AirPortService;
 import com.htec.util.DocumentUtil;
 
