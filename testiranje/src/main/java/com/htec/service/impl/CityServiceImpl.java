@@ -123,20 +123,25 @@ public class CityServiceImpl implements CityService {
         Set<NodeWeighted> nodeWeightedSet = new HashSet<>();
         List<Route> route = routeRepository.finaAllRoute();
         long kraj = System.currentTimeMillis();
-        log.info("Posle upita iz baze "+(kraj - pocetak));
+        log.info("Posle upita iz baze " + (kraj - pocetak));
         route.forEach(r -> {
-            nodeWeightedSet.add(new NodeWeighted(r.getRoutePk().getSourceCode()));
-            nodeWeightedSet.add(new NodeWeighted(r.getRoutePk().getDestinationCode()));
-            Optional<NodeWeighted> nodeWeighted = nodeWeightedSet.stream().filter(a -> a.getName().equals(r.getRoutePk().getSourceCode())).findFirst();
-            Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a -> a.getName().equals(r.getRoutePk().getDestinationCode())).findFirst();
+            if (nodeWeightedSet.contains(new NodeWeighted(r.getRoutePk().getSourceCode())))
+                nodeWeightedSet.add(new NodeWeighted(r.getRoutePk().getSourceCode()));
+            if (nodeWeightedSet.contains(new NodeWeighted(r.getRoutePk().getDestinationCode())))
+                nodeWeightedSet.add(new NodeWeighted(r.getRoutePk().getDestinationCode()));
+
+            Optional<NodeWeighted> nodeWeighted = nodeWeightedSet.parallelStream().filter(a -> a.getName().equals(r.getRoutePk().getSourceCode())).findFirst();
+            Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.parallelStream().filter(a -> a.getName().equals(r.getRoutePk().getDestinationCode())).findFirst();
             graphWeighted.addEdge(nodeWeighted.get(), nodeWeighted1.get(), r.getPrice());
+
+
         });
         kraj = System.currentTimeMillis();
-        log.info("Posle prve metode "+(kraj - pocetak));
+        log.info("Posle prve metode " + (kraj - pocetak));
         Optional<NodeWeighted> nodeWeighted = nodeWeightedSet.stream().filter(a -> a.getName().equals(from)).findFirst();
         Optional<NodeWeighted> nodeWeighted1 = nodeWeightedSet.stream().filter(a -> a.getName().equals(to)).findFirst();
         kraj = System.currentTimeMillis();
-        log.info("Pre ifa "+(kraj - pocetak));
+        log.info("Pre ifa " + (kraj - pocetak));
         if (nodeWeighted.isPresent() && nodeWeighted1.isPresent()) {
             ResponseFlight responseFlight = graphWeighted.dijkstraShortestPath(nodeWeighted.get(), nodeWeighted1.get());
             return Response.builder()
