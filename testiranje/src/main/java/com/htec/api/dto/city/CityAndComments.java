@@ -1,4 +1,4 @@
-package com.htec.api.dto.response;
+package com.htec.api.dto.city;
 
 import com.htec.entity.Comment;
 import lombok.AllArgsConstructor;
@@ -16,6 +16,7 @@ import java.util.List;
 @Builder
 @Data
 public class CityAndComments {
+
     private CityDtoResponse city;
     private List<Comment> comments;
 

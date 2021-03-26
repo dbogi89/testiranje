@@ -1,6 +1,6 @@
 package com.htec.util;
 
-import com.htec.api.dto.response.DocumentResponse;
+import com.htec.api.dto.document.Response;
 import com.htec.constants.Constants;
 import com.htec.entity.DocumentType;
 import com.htec.service.document.DocumentService;
@@ -10,24 +10,24 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-
 /**
  * Created by dbogicevic
  */
 public class DocumentUtil {
+    //https://attacomsian.com/blog/read-write-csv-files-opencsv
 
-    public static <T> DocumentResponse parseDocument(String documentType, MultipartFile multipartFile, Class<T> type,
-                                                  BeanVerifier<T> bean) throws IOException {
+    public static <T> Response parseDocument(String documentType, MultipartFile multipartFile, Class<T> type,
+            BeanVerifier<T> bean) throws IOException {
         DocumentService documentService = null;
         DocumentType docType = toDocumentType(documentType);
-        DocumentResponse documentResponse = null;
+        Response documentResponse = null;
         switch (docType) {
             case CSV:
                 documentService = new DocumentServiceImplCSV();
                 break;
             //case EXCEL:
-                //u buducnosti
-             //   break;
+            //u buducnosti
+            //   break;
             default:
                 documentService = new DocumentServiceImplCSV();
                 break;
@@ -35,7 +35,6 @@ public class DocumentUtil {
 
         return documentService.generate(multipartFile, type, bean);
     }
-
 
     public static DocumentType toDocumentType(String value) {
         if (value == null || value.isEmpty()) {

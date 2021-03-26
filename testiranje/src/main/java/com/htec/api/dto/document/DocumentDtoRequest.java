@@ -1,4 +1,4 @@
-package com.htec.api.dto.request;
+package com.htec.api.dto.document;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class DocumentDtoRequest {
-    private String documentType;
 
+    private String documentType;
 
 }

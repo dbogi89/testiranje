@@ -32,6 +32,12 @@ public class City {
     @Column(length = 150)
     private String description;
 
+    public City(String cityName, String description, Country country) {
+        this.cityName = cityName;
+        this.description = description;
+        this.country = country;
+    }
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "city")
     private List<Comment> comments = new ArrayList<>();
 
@@ -42,10 +48,6 @@ public class City {
     @JoinColumn(name = "COUNTRY_ID", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Country country;
-    public City(Long id, Country country){
-        this.id = id;
-        this.country = country;
-    }
 
     public void addComment(Comment comment) {
         comments.add(comment);

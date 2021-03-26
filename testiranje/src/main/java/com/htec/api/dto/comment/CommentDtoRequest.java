@@ -1,4 +1,4 @@
-package com.htec.api.dto.request;
+package com.htec.api.dto.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CommentDtoRequest {
+
     private String description;
 }

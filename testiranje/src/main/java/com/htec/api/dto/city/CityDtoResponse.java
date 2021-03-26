@@ -1,4 +1,4 @@
-package com.htec.api.dto.response;
+package com.htec.api.dto.city;
 
 import com.htec.entity.Comment;
 import lombok.AllArgsConstructor;
@@ -11,12 +11,12 @@ import java.util.List;
 /**
  * Created by dbogicevic
  */
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
 public class CityDtoResponse {
+
     private Long idCity;
     private String cityName;
     private String countryName;

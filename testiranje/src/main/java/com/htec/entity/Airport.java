@@ -15,11 +15,10 @@ import java.util.List;
 @ToString(exclude = {"destinationRoutes", "sourceRoutes"})
 public class Airport {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NonNull
     @Basic(optional = false)
-    @Column(name = "NAME_AIRPORT", nullable = false)
+    @Column(name = "NAME_AIRPORT")
     private String airPortName;
 
     @NonNull
@@ -42,7 +41,7 @@ public class Airport {
     private Point point;
 
     @NonNull
-    private Integer altitude;
+    private String altitude;
 
     @NonNull
     private Float timezone;

@@ -13,9 +13,10 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 public class Route {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    //setuj ovo u posebnu klasu
+    @EmbeddedId
+   private RoutePk routePk;
+
     @Column(name = "AIRLINE_CODE", length = 3)
     private String airlineCode;
 
@@ -40,4 +41,6 @@ public class Route {
     @JoinColumn(name = "SOURCE_AIRPORT_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Airport sourceAirPort;
+
+
 }

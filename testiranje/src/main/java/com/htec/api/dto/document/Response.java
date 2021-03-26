@@ -1,4 +1,4 @@
-package com.htec.api.dto.response;
+package com.htec.api.dto.document;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,20 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *
  * @author dbogicevic
  */
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class DocumentResponse<T> {
+public class Response<T> {
+
     private int code;
     private String description;
     private T content;
-
-
-
-
 
 }
